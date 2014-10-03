@@ -1,0 +1,59 @@
+{
+  "name": "cerebellum-app",
+  "version": "0.1.0",
+  "description": "Isomorphic web apps with React.",
+  "main": "server.js",
+  "scripts": {
+    "build": "npm run build_lib & npm run build_app & npm run build_less",
+    "build_min": "uglifyjs public/js/lib.js public/js/app.js -o public/js/app.min.js",
+    "build_lib": "browserify -r cerebellum -r react/addons -r react-bootstrap -u jquery -u underscore -o public/js/lib.js",
+    "build_app": "browserify -x cerebellum -x react/addons -x react-bootstrap client.js -t reactify -o public/js/app.js",
+    "build_less": "lessc less/styles.less public/css/styles.css",
+    "watch_lib": "watchify -r cerebellum -r react/addons -r react-bootstrap -u jquery -u underscore -o public/js/lib.js -v",
+    "watch_app": "watchify -x cerebellum -x react/addons -x react-bootstrap client.js -u jquery -u underscore -d -t reactify -o public/js/app.js -v",
+    "watch_less": "catw -c 'lessc -' 'less/styles.less' -o public/css/styles.css -v",
+    "watch": "npm run watch_app & npm run watch_lib & npm run watch_less",
+    "start": "nodemon server.js",
+    "postinstall": "npm run build"
+  },
+  "author": "Lari Hoppula",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.2.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "browserify": "^5.12.0",
+    "catw": "^0.2.0",
+    "cerebellum": "git+https://bitbucket.org/SC5/cerebellum.git",
+    "compression": "^1.1.0",
+    "connect-mongostore": "^0.1.3",
+    "cookie-parser": "^1.3.3",
+    "dotenv": "^0.4.0",
+    "ejs": "^1.0.0",
+    "express": "^4.9.5",
+    "express-session": "^1.8.2",
+    "less": "^1.7.5",
+    "lodash": "^2.4.1",
+    "mongoose": "^3.8.17",
+    "native-promise-only": "^0.7.6-a",
+    "node-jsx": "^0.11.0",
+    "passport": "^0.2.1",
+    "passport-google-oauth": "^0.1.5",
+    "react": "^0.11.2",
+    "react-bootstrap": "^0.12.0",
+    "reactify": "^0.14.0",
+    "uglify-js": "^2.4.15",
+    "watchify": "1.0.6"
+  },
+  "browser": {
+    "./config/api.js": "./config/api-browser.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/SC5/cerebellum-app"
+  }
+}

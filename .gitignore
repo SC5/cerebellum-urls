@@ -1,0 +1,6 @@
+node_modules
+.DS_Store
+.env
+public/js/app.js
+public/js/lib.js
+public/css
