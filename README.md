@@ -22,6 +22,8 @@ Full-blown cerebellum sample app.
 - MONGO_HOST
 - MONGO_PORT
 - MONGO_DBNAME
+- MONGO_USER
+- MONGO_PASS
 
 3)
 
