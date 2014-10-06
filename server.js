@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
 
-mongoose.connect(process.env.MONGO_URLS); // connect to our database
+mongoose.connect("mongodb://"+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME); // connect to our database
 
 var cerebellum = require('cerebellum');
 var options = require('./options');
@@ -40,7 +40,7 @@ options.middleware = [
   cookieParser(process.env.COOKIE_SECRET),
   bodyParser.json(),
   bodyParser.urlencoded({extended: true}),
-  session({secret: process.env.COOKIE_SECRET, store: new MongoStore({'db': process.env.MONGO_SESSIONS}), saveUninitialized: true, resave: true}),
+  session({secret: process.env.COOKIE_SECRET, store: new MongoStore({db: process.env.MONGO_DBNAME, host: process.env.MONGO_HOST, port: process.env.MONGO_PORT, collection: "sessions"}), saveUninitialized: true, resave: true}),
   passport.initialize(),
   passport.session()
 ];
