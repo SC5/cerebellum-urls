@@ -1,7 +1,7 @@
 {
-  "name": "cerebellum-app",
-  "version": "0.1.0",
-  "description": "Isomorphic web apps with React.",
+  "name": "urls-app",
+  "version": "1.0.0",
+  "description": "store and tag your urls, cerebellum sample app.",
   "main": "server.js",
   "scripts": {
     "build": "npm run build_lib & npm run build_app & npm run build_less",
@@ -54,6 +54,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/SC5/cerebellum-app"
+    "url": "https://bitbucket.org/SC5/cerebellum-urls"
   }
 }
