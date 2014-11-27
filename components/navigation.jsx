@@ -1,10 +1,8 @@
-/** @jsx React.DOM */
 var React = require('react/addons');
-var reactBootstrap = require('react-bootstrap');
-
-var Navbar = reactBootstrap.Navbar;
-var NavItem = reactBootstrap.NavItem;
-var Nav = reactBootstrap.Nav;
+var ReactBootstrap = require('react-bootstrap');
+var Navbar = ReactBootstrap.Navbar;
+var NavItem = ReactBootstrap.NavItem;
+var Nav = ReactBootstrap.Nav;
 
 var Navigation = React.createClass({
   render: function() {
@@ -13,7 +11,7 @@ var Navigation = React.createClass({
     var navigation;
     if (this.props.user) {
       navigation = (
-        <Nav className="bs-navbar-collapse" key={0} role="navigation">
+        <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/tags">Tags</NavItem>
           <NavItem href="/profile">Profile</NavItem>
           <NavItem href="/logout" className="logout">Logout {this.props.user.email}</NavItem>
@@ -21,7 +19,7 @@ var Navigation = React.createClass({
       );
     } else {
       navigation = (
-        <Nav className="bs-navbar-collapse" key={0} role="navigation">
+        <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/auth/google" className="login">Login with Google</NavItem>
         </Nav>
       );

@@ -10,7 +10,6 @@ var oAuthTypes = [
   'linkedin'
 ];
 
-
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   email: { type: String, default: '' },

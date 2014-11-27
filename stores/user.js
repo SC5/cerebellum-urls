@@ -1,7 +1,8 @@
-var Model = require('cerebellum').exoskeleton.Model;
+var Model = require('cerebellum').Model;
 var apiConfig = require("../config/api");
 
 var User = Model.extend({
+  cacheKey: "user",
   idAttribute: "_id",
   url: function() {
     return apiConfig.url +"/api/user";

@@ -32,7 +32,7 @@ options.render = function render(document, options) {
   if (options.title) {
     document("title").html(options.title);
   }
-  document("#"+appId).html( React.renderComponentToString(options.component) );
+  document("#"+appId).html( React.renderToString(options.component) );
   return document.html();
 };
 

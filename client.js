@@ -13,24 +13,30 @@ options.render = function render(options) {
   if (options.title) {
     document.getElementsByTagName("title")[0].innerHTML = options.title;
   }
-  React.renderComponent(options.component, appContainer);
+  React.render(options.component, appContainer);
 };
 
 options.initialize = function(client) {
   React.initializeTouchEvents(true);
 
-  // TODO: currently store callbacks are handled manually, I'm still not sure if they belong inside Store or not
-  client.store.on("create", function(storeId, props) {
-    props.tags = props.tags.split(",").map(function(tag) { return tag.trim(); });
-    client.store.get(storeId).create(props, {at: 0, success: function() {
-      client.router.setRoute("/");
-    }});
+  // TODO: add error handling
+  client.store.on("create:links", function(err, data) {
+    client.router("/");
   });
+
+  client.store.on("delete:link", function(err, data) {
+    client.store.clearCache("links", "links");
+    client.router("/");
+  });
+
+  client.store.on("update:link", function(err, data) {
+    client.store.clearCache("links", "links");
+    client.router("/");
+  });
+
 };
 
-options.passthrough = [
-  "auth/google",
-  "logout"
-];
+// clear caches automatically after create, update & delete
+options.autoClearCaches = true;
 
 cerebellum.client(options);

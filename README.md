@@ -4,6 +4,7 @@ Full-blown cerebellum sample app.
 
 Sample app running at: https://cerebellumurls.herokuapp.com/
 
+* Create, update & delete links
 * Shared GET routes
 * API implemented with express & mongoose
 * Authentication with Google's oAuth 2

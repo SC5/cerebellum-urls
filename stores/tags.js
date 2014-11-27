@@ -1,8 +1,9 @@
-var exoskeleton = require('cerebellum').exoskeleton;
-var Collection = exoskeleton.Collection;
+var cerebellum = require('cerebellum');
+var Collection = cerebellum.Collection;
 var apiConfig = require("../config/api");
 
 var Tags = Collection.extend({
+  cacheKey: "tags",
   url: apiConfig.url +"/api/tags"
 });
 

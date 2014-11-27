@@ -1,15 +1,13 @@
-/** @jsx React.DOM */
 var React = require('react/addons');
+var ReactBootstrap = require('react-bootstrap');
+var Jumbotron = ReactBootstrap.Jumbotron;
+var Panel = ReactBootstrap.Panel;
+var ListGroup = ReactBootstrap.ListGroup;
+var ListGroupItem = ReactBootstrap.ListGroupItem;
+var Row = ReactBootstrap.Row;
+var Col = ReactBootstrap.Col;
+
 var Navigation = require('./navigation.jsx');
-
-var reactBootstrap = require('react-bootstrap');
-
-var Jumbotron = reactBootstrap.Jumbotron;
-var Panel = reactBootstrap.Panel;
-var ListGroup = reactBootstrap.ListGroup;
-var ListGroupItem = reactBootstrap.ListGroupItem;
-var Row = reactBootstrap.Row;
-var Col = reactBootstrap.Col;
 
 var Tags = React.createClass({
   render: function() {
@@ -18,8 +16,9 @@ var Tags = React.createClass({
       return (
         <Panel key={tag.id} header={tag.id}>
           <ListGroup>
-            {tag.links.map(function(link) {
-              return <ListGroupItem href={link.url}>{link.title}</ListGroupItem>
+            {tag.links.map(function(link, i) {
+              var key = link + "_" + i;
+              return <ListGroupItem key={key} href={link.url}>{link.title}</ListGroupItem>
             })}
           </ListGroup>
         </Panel>

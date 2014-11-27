@@ -5,7 +5,7 @@ module.exports = function(ensureAuthenticated) {
   links.use( ensureAuthenticated );
 
   links.get("/", function(req, res) {
-    return Link.find({'user': req.user._id}).select("-__v -user").sort("-modified").exec(function (err, links) {
+    return Link.find({'user': req.user._id}).select("-__v -user").sort("-modified").exec(function(err, links) {
       if (err) {
         return res.send(err);
       }
@@ -30,7 +30,7 @@ module.exports = function(ensureAuthenticated) {
   });
 
   links.get("/:id", function(req, res) {
-    return Link.find({_id: req.params.id, user: req.user._id}).exec(function (err, link) {
+    return Link.findOne({_id: req.params.id, user: req.user._id}).exec(function(err, link) {
       if (err) {
         return res.send(err);
       }
@@ -38,8 +38,8 @@ module.exports = function(ensureAuthenticated) {
     });
   });
 
-  links.put("/:id", function(req, res) {
-    return Link.find({_id: req.params.id, user: req.user._id}).exec(function (err, link) {
+  links.post("/:id", function(req, res) {
+    return Link.findOne({_id: req.params.id, user: req.user._id}).exec(function(err, link) {
       if (err) {
         return res.send(err);
       }
@@ -47,7 +47,7 @@ module.exports = function(ensureAuthenticated) {
       link.title = req.body.title;
       link.url = req.body.url;
       link.modified = Date.now();
-      link.tags = req.tags.split(",").map(function(tag) { return tag.trim(); });
+      link.tags = req.body.tags ? req.body.tags : [];
 
       link.save(function(err) {
         if (err) {

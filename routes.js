@@ -1,3 +1,5 @@
+require('native-promise-only');
+var React = require('react/addons');
 var IndexView = require('./components/index.jsx');
 var ProfileView = require('./components/profile.jsx');
 var TagsView = require('./components/tags.jsx');
@@ -8,11 +10,11 @@ module.exports = {
 
     return Promise.all([this.store.fetch("user"), this.store.fetch("links")]).then(function(results) {
       var userModel = results[0];
-      var links = results[1].toJSON();
-      var user = userModel.isValid() ? userModel.toJSON() : false;
+      var links = results[1];
+      var user = userModel._id ? userModel : false;
       return {
         title: "urls - save and tag your urls",
-        component: IndexView({
+        component: React.createElement(IndexView, {
           links: links,
           user: user,
           store: self.store
@@ -24,12 +26,11 @@ module.exports = {
     var self = this;
 
     return this.store.fetch("user").then(function(userModel) {
-      var user = userModel.isValid() ? userModel.toJSON() : false;
+      var user = userModel._id ? userModel : false;
       return {
         title: "urls - your profile",
-        component: ProfileView({
-          user: user,
-          store: self.store
+        component: React.createElement(ProfileView, {
+          user: user
         })
       }
     });
@@ -39,15 +40,14 @@ module.exports = {
 
     return Promise.all([this.store.fetch("user"), this.store.fetch("tags")]).then(function(results) {
       var userModel = results[0];
-      var tags = results[1].toJSON();
-      var user = userModel.isValid() ? userModel.toJSON() : false;
+      var tags = results[1];
+      var user = userModel._id ? userModel : false;
 
       return {
         title: "urls - your tags",
-        component: TagsView({
+        component: React.createElement(TagsView, {
           tags: tags,
-          user: user,
-          store: self.store
+          user: user
         })
       };
     });
@@ -57,21 +57,18 @@ module.exports = {
 
     return Promise.all([this.store.fetch("user"), this.store.fetch("tags")]).then(function(results) {
       var userModel = results[0];
-      var user = userModel.isValid() ? userModel.toJSON() : false;
+      var user = userModel._id ? userModel : false;
 
       var tags = results[1].filter(function(tag) {
         return tag.id === id;
-      }).map(function(tag) {
-        return tag.toJSON()
       });
 
       return {
         title: "urls - urls tagged with "+id,
-        component: TagsView({
+        component: React.createElement(TagsView, {
           selected: id,
           tags: tags,
-          user: user,
-          store: self.store
+          user: user
         })
       };
     });
