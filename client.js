@@ -20,19 +20,12 @@ options.initialize = function(client) {
   React.initializeTouchEvents(true);
 
   // TODO: add error handling
-  client.store.on("create:links", function(err, data) {
-    client.router("/");
-  });
-
-  client.store.on("delete:link", function(err, data) {
-    client.store.clearCache("links", "links");
-    client.router("/");
-  });
-
-  client.store.on("update:link", function(err, data) {
-    client.store.clearCache("links", "links");
-    client.router("/");
-  });
+  function reloadIndex() {
+    client.router.replace(document.location.pathname);
+  }
+  client.store.on("create:links", reloadIndex);
+  client.store.on("delete:link", reloadIndex);
+  client.store.on("update:link", reloadIndex);
 
 };
 

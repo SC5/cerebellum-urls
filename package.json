@@ -1,6 +1,6 @@
 {
   "name": "urls-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "store and tag your urls, cerebellum sample app.",
   "main": "server.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "postinstall": "npm run build"
   },
   "author": "Lari Hoppula",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.2.1"
   },
@@ -25,12 +25,11 @@
     "body-parser": "^1.9.3",
     "browserify": "^6.3.3",
     "catw": "^0.2.0",
-    "cerebellum": "^0.4.0",
+    "cerebellum": "^0.5.1",
     "compression": "^1.2.1",
     "connect-mongostore": "^0.1.4",
     "cookie-parser": "^1.3.3",
     "dotenv": "^0.4.0",
-    "ejs": "^1.0.0",
     "express": "^4.10.4",
     "express-session": "^1.9.2",
     "less": "^2.1.1",
