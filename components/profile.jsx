@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Jumbotron = ReactBootstrap.Jumbotron;
 var Panel = ReactBootstrap.Panel;
@@ -13,7 +13,7 @@ var Profile = React.createClass({
       <Navigation user={this.props.user} />
 
       <Jumbotron>
-        <h1>{this.props.user.name}</h1>
+        <h1>{this.props.user.get("name")}</h1>
       </Jumbotron>
 
       <Panel>

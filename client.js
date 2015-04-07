@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 
 var cerebellum = require('cerebellum');
 var options = require('./options');
@@ -23,6 +23,12 @@ options.initialize = function(client) {
   function reloadIndex() {
     client.router.replace(document.location.pathname);
   }
+
+  // re-render current route handler when Store cache changes, optimistic updates
+  client.store.cached.on('swap', function(a) {
+    reloadIndex();
+  });
+
   client.store.on("create:links", reloadIndex);
   client.store.on("delete:link", reloadIndex);
   client.store.on("update:link", reloadIndex);

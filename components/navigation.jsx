@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Navbar = ReactBootstrap.Navbar;
 var NavItem = ReactBootstrap.NavItem;
@@ -14,7 +14,7 @@ var Navigation = React.createClass({
         <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/tags">Tags</NavItem>
           <NavItem href="/profile">Profile</NavItem>
-          <NavItem href="/logout" className="logout">Logout {this.props.user.email}</NavItem>
+          <NavItem href="/logout" className="logout">Logout {this.props.user.get("email")}</NavItem>
         </Nav>
       );
     } else {

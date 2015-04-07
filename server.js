@@ -1,9 +1,7 @@
 var dotenv = require('dotenv');
 dotenv.load();
 
-require('node-jsx').install({extension: ".jsx"});
-
-var React = require('react/addons');
+var React = require('react');
 var mongoose = require('mongoose');
 
 var compress = require('compression');
@@ -12,6 +10,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongostore')(session);
+
+require("babel/register");
 
 var mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
 mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME); // connect to our database

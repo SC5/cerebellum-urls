@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Panel = ReactBootstrap.Panel;
 var Button = ReactBootstrap.Button;
@@ -21,17 +21,17 @@ var LinkForm = React.createClass({
 
     if (link) {
       this.setState({
-        id: link._id,
-        title: link.title,
-        url: link.url,
-        tags: link.tags.join(",")
+        id: link.get("_id"),
+        title: link.get("title"),
+        url: link.get("url"),
+        tags: link.get("tags").join(",")
       });
     } else {
       this.clear();
     }
   },
   add: function(event) {
-    this.props.store.trigger("create", "links", this.linkState());
+    this.props.store.dispatch("create", "links", this.linkState());
     this.clear();
   },
   linkState: function() {
@@ -45,7 +45,7 @@ var LinkForm = React.createClass({
     this.setState({title: "", url: "", tags: "", id: null});
   },
   update: function(event) {
-    this.props.store.trigger("update", "link", {id: this.state.id}, this.linkState());
+    this.props.store.dispatch("update", "link", {id: this.state.id}, this.linkState());
     this.props.selectLink(null);
   },
   cancel: function(event) {

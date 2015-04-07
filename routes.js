@@ -1,5 +1,5 @@
 require('native-promise-only');
-var React = require('react/addons');
+var React = require('react');
 var IndexView = require('./components/index.jsx');
 var ProfileView = require('./components/profile.jsx');
 var TagsView = require('./components/tags.jsx');
@@ -11,7 +11,8 @@ module.exports = {
     return Promise.all([this.store.fetch("user"), this.store.fetch("links")]).then(function(results) {
       var userModel = results[0];
       var links = results[1];
-      var user = userModel._id ? userModel : false;
+
+      var user = userModel.get("_id") ? userModel : false;
       return {
         title: "urls - save and tag your urls",
         component: React.createElement(IndexView, {
@@ -26,7 +27,7 @@ module.exports = {
     var self = this;
 
     return this.store.fetch("user").then(function(userModel) {
-      var user = userModel._id ? userModel : false;
+      var user = userModel.get("_id") ? userModel : false;
       return {
         title: "urls - your profile",
         component: React.createElement(ProfileView, {
@@ -41,7 +42,7 @@ module.exports = {
     return Promise.all([this.store.fetch("user"), this.store.fetch("tags")]).then(function(results) {
       var userModel = results[0];
       var tags = results[1];
-      var user = userModel._id ? userModel : false;
+      var user = userModel.get("_id") ? userModel : false;
 
       return {
         title: "urls - your tags",
@@ -57,7 +58,7 @@ module.exports = {
 
     return Promise.all([this.store.fetch("user"), this.store.fetch("tags")]).then(function(results) {
       var userModel = results[0];
-      var user = userModel._id ? userModel : false;
+      var user = userModel.get("_id") ? userModel : false;
 
       var tags = results[1].filter(function(tag) {
         return tag.id === id;

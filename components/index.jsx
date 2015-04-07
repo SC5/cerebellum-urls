@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Jumbotron = ReactBootstrap.Jumbotron;
 

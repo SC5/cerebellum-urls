@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var Jumbotron = ReactBootstrap.Jumbotron;
 var Panel = ReactBootstrap.Panel;
@@ -12,13 +12,13 @@ var Navigation = require('./navigation.jsx');
 var Tags = React.createClass({
   render: function() {
     var title = this.props.selected ? "Links for "+this.props.selected : "All tags";
-    var tags = this.props.tags.map(function(tag) {
+    var tags = this.props.tags.toArray().map(function(tag) {
       return (
-        <Panel key={tag.id} header={tag.id}>
+        <Panel key={tag.get("id")} header={tag.get("id")}>
           <ListGroup>
-            {tag.links.map(function(link, i) {
-              var key = link + "_" + i;
-              return <ListGroupItem key={key} href={link.url}>{link.title}</ListGroupItem>
+            {tag.get("links").toArray().map(function(link, i) {
+              var key = "link_" + i;
+              return <ListGroupItem key={key} href={link.get("url")}>{link.get("title")}</ListGroupItem>
             })}
           </ListGroup>
         </Panel>
