@@ -24,11 +24,6 @@ options.initialize = function(client) {
     client.router.replace(document.location.pathname);
   }
 
-  // re-render current route handler when Store cache changes, optimistic updates
-  client.store.cached.on('swap', function(a) {
-    reloadIndex();
-  });
-
   client.store.on("create:links", reloadIndex);
   client.store.on("delete:link", reloadIndex);
   client.store.on("update:link", reloadIndex);

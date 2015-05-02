@@ -13,13 +13,13 @@
     "watch_app": "watchify -x cerebellum -x react -x react-bootstrap client.js -u jquery -u underscore -d -t babelify -o public/js/app.js -v",
     "watch_less": "catw -c 'lessc -' 'less/styles.less' -o public/css/styles.css -v",
     "watch": "npm run watch_app & npm run watch_lib & npm run watch_less",
-    "start": "nodemon server.js",
+    "start": "node-dev --no-deps server.js",
     "postinstall": "npm run build"
   },
   "author": "Lari Hoppula",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^1.2.1"
+    "node-dev": "^2.6.1"
   },
   "dependencies": {
     "babel": "^5.0.9",
