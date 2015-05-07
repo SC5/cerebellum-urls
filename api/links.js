@@ -23,7 +23,7 @@ module.exports = function(ensureAuthenticated) {
 
     link.save(function(err) {
       if (err) {
-        return res.send(err);
+        return res.status(500).send(err);
       }
       return res.status(200).json({});
     });
@@ -41,7 +41,7 @@ module.exports = function(ensureAuthenticated) {
   links.post("/:id", function(req, res) {
     return Link.findOne({_id: req.params.id, user: req.user._id}).exec(function(err, link) {
       if (err) {
-        return res.send(err);
+        return res.status(500).send(err);
       }
 
       link.title = req.body.title;
@@ -51,7 +51,7 @@ module.exports = function(ensureAuthenticated) {
 
       link.save(function(err) {
         if (err) {
-          return res.send(err);
+          return res.status(500).send(err);
         }
         return res.status(200).json({});
       });
@@ -61,7 +61,7 @@ module.exports = function(ensureAuthenticated) {
   links.delete("/:id", function(req, res) {
     return Link.remove({_id: req.params.id, user: req.user._id}, function(err, link) {
       if (err) {
-        return res.send(err);
+        return res.status(500).send(err);
       }
       return res.status(200).json({});
     });

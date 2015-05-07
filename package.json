@@ -42,8 +42,9 @@
     "passport-google-oauth": "^0.1.5",
     "react": "^0.13.1",
     "react-bootstrap": "^0.20.2",
+    "react-crouton": "^0.2.4",
     "uglify-js": "^2.4.15",
-    "watchify": "2.1.1"
+    "watchify": "^3.2.1"
   },
   "browser": {
     "./config/api.js": "./config/api-browser.js"

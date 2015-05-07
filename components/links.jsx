@@ -9,8 +9,8 @@ var Links = React.createClass({
   render: function() {
     var store = this.props.store;
     var selectLink = this.props.selectLink;
-    var links = this.props.links.toArray().map(function(link) {
-      return <Link key={link.get("_id")} store={store} link={link} selectLink={selectLink} />
+    var links = this.props.links.toArray().map(function(link, i) {
+      return <Link key={i} store={store} link={link} selectLink={selectLink} />
     });
 
     return (
