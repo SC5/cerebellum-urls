@@ -1,19 +1,17 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Jumbotron = ReactBootstrap.Jumbotron;
-var Panel = ReactBootstrap.Panel;
+import React from 'react';
+import {Jumbotron, Panel} from 'react-bootstrap';
+import Navigation from './navigation.jsx';
 
-var Navigation = require('./navigation.jsx');
+class Profile extends React.Component {
 
-var Profile = React.createClass({
-  render: function() {
-    var user = this.props.user;
+  render() {
+    const user = this.props.user;
 
     return <div>
-      <Navigation user={this.props.user} />
+      <Navigation user={user} />
 
       <Jumbotron>
-        <h1>{this.props.user.get("name")}</h1>
+        <h1>{user.get("name")}</h1>
       </Jumbotron>
 
       <Panel>
@@ -21,6 +19,15 @@ var Profile = React.createClass({
       </Panel>
     </div>
   }
-});
 
-module.exports = Profile;
+}
+
+Profile.title = "urls - your profile";
+
+Profile.stores = (request) => {
+  return {
+    "user": {}
+  };
+};
+
+export default Profile;

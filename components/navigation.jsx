@@ -1,15 +1,13 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Navbar = ReactBootstrap.Navbar;
-var NavItem = ReactBootstrap.NavItem;
-var Nav = ReactBootstrap.Nav;
+import React from 'react';
+import {Navbar, NavItem, Nav} from 'react-bootstrap';
 
-var Navigation = React.createClass({
-  render: function() {
-    var brand = <a href="/" className="navbar-brand">urls</a>;
+class Navigation extends React.Component {
 
-    var navigation;
-    if (this.props.user) {
+  render() {
+    const brand = <a href="/" className="navbar-brand">urls</a>;
+    let navigation = null;
+
+    if (this.props.user.get("_id")) {
       navigation = (
         <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/tags">Tags</NavItem>
@@ -31,6 +29,7 @@ var Navigation = React.createClass({
       </Navbar>
     );
   }
-});
 
-module.exports = Navigation;
+}
+
+export default Navigation;

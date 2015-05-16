@@ -1,9 +1,9 @@
-var Links = require('./stores/links');
-var Link = require('./stores/link');
-var User = require('./stores/user');
-var Tags = require('./stores/tags');
+import Links from './stores/links';
+import Link from './stores/link';
+import User from './stores/user';
+import Tags from './stores/tags';
 
-module.exports = {
+export default {
   links: Links,
   link: Link,
   user: User,

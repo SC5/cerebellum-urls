@@ -1,47 +1,67 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Jumbotron = ReactBootstrap.Jumbotron;
+import React from 'react';
+import {Jumbotron} from 'react-bootstrap';
 
-var Navigation = require('./navigation.jsx');
-var Links = require('./links.jsx');
-var LinkForm = require('./link-form.jsx');
+import Navigation from './navigation.jsx';
+import Links from './links.jsx';
+import LinkForm from './link-form.jsx';
 
-var Index = React.createClass({
-  getInitialState: function() {
-    return {
+class Index extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
       selectedLink: null
-    }
-  },
-  selectLink: function(link) {
-    this.setState({selectedLink: link});
-  },
-  render: function() {
-    var introduction, links, linkForm;
+    };
 
-    if (this.props.user) {
-      introduction = "";
-      linkForm = <LinkForm store={this.props.store} link={this.state.selectedLink} selectLink={this.selectLink} />;
-      links = <Links {...this.props} selectLink={this.selectLink} />;
-    } else {
-      introduction = (
+    this.selectLink = this.selectLink.bind(this);
+  }
+
+  selectLink(link) {
+    this.setState({selectedLink: link});
+  }
+
+  loggedIn(user, links) {
+    return (
+      <div>
+        <Navigation user={user} />
+        <LinkForm link={this.state.selectedLink} selectLink={this.selectLink} />
+        <Links user={user} links={links} selectLink={this.selectLink} />
+      </div>
+    );
+  }
+
+  notLoggedIn(user, links) {
+    return (
+      <div>
+        <Navigation user={user} />
         <Jumbotron>
           <h1>urls</h1>
           <p>save and tag urls</p>
         </Jumbotron>
-      );
-      linkForm = "";
-      links = "";
-    }
-
-    return (
-      <div>
-        <Navigation user={this.props.user} />
-        {introduction}
-        {linkForm}
-        {links}
       </div>
     );
   }
-});
 
-module.exports = Index;
+  render() {
+    let {user, links} = this.props;
+
+    if (user.get("_id")) {
+      return this.loggedIn(user, links);
+    } else {
+      return this.notLoggedIn(user, links);
+    }
+  }
+
+}
+
+Index.title = "urls - save and tag your urls";
+
+Index.stores = (request) => {
+  return {
+    "user": {},
+    "links": {}
+  };
+}
+
+export default Index;

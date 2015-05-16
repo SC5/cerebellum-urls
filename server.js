@@ -1,39 +1,48 @@
-var dotenv = require('dotenv');
+// load environment variables from .env with dotenv
+import dotenv from 'dotenv';
 dotenv.load();
 
-var React = require('react');
-var mongoose = require('mongoose');
+import React from 'react';
+import mongoose from 'mongoose';
+import {server as Cerebellum} from 'cerebellum';
+import compress from 'compression';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import ConnectMongoStore from 'connect-mongostore';
+import options from './options';
+import UrlsAPI from './api';
+import AuthenticationFactory from './authentication';
 
-var compress = require('compression');
-var passport = require('passport');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var MongoStore = require('connect-mongostore')(session);
+// connect to our database
+const MongoStore = ConnectMongoStore(session);
+const mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
+mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME);
 
-require("babel/register");
+const appId = options.appId;
+const Layout = React.createFactory(require('./components/layout.jsx'));
 
-var mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
-mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME); // connect to our database
-
-var cerebellum = require('cerebellum');
-var options = require('./options');
-
-// routes
-var api = require('./api');
-var authentication = require('./authentication')(passport);
-
-var appId = options.appId;
-
-options.render = function render(document, options) {
-  if (options == null) {
-    options = {};
-  }
-  if (options.title) {
-    document("title").html(options.title);
-  }
-  document("#"+appId).html( React.renderToString(options.component) );
-  return document.html();
+options.render = function render(document, component, request) {
+  const componentFactory = React.createFactory(component);
+  const store = this.store;
+  return new Promise(function(resolve, reject) {
+    store.fetchAll(component.stores(request)).then(storeProps => {
+      const props = typeof component.preprocess === "function" ? component.preprocess(storeProps, request) : storeProps;
+      const title = typeof component.title === "function" ? component.title(storeProps) : component.title;
+      document("title").html(title);
+      document(`#${options.storeId}`).text(store.snapshot());
+      document(`#${options.appId}`).html(
+        React.renderToString(
+          Layout({
+            createComponent: () => { return componentFactory(props) },
+            store: store
+          })
+        )
+      );
+      resolve(document.html());
+    }).catch(reject);
+  });
 };
 
 options.middleware = [
@@ -58,17 +67,17 @@ options.middleware = [
   passport.session()
 ];
 
-var app = cerebellum.server(options);
+const app = Cerebellum(options);
 
 // load API routes
-app.use( "/api", api );
+app.use( "/api", UrlsAPI );
 
 // load authentication routes
-app.use( "/", authentication );
+app.use( "/", AuthenticationFactory(passport) );
 
 // always register static files middleware after defining routes
 app.useStatic();
 
 app.listen(Number(process.env.PORT || 4000), function() {
-  console.log("cerebellum sample app development server listening on port "+ (this.address().port));
+  console.log(`urls development server listening on port ${this.address().port}`);
 });

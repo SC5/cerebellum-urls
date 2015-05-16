@@ -1,0 +1,27 @@
+import React from 'react';
+
+class Layout extends React.Component {
+
+  getChildContext() {
+    return {
+      store: this.props.store
+    };
+  }
+
+  render() {
+    // https://github.com/facebook/react/issues/3392
+    let component = this.props.createComponent();
+    return (
+      <div>
+        {component}
+      </div>
+    );
+  }
+
+}
+
+Layout.childContextTypes = {
+  store: React.PropTypes.object
+};
+
+export default Layout;

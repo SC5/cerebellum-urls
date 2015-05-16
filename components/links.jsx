@@ -1,15 +1,12 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Panel = ReactBootstrap.Panel;
-var Row = ReactBootstrap.Row;
+import React from 'react';
+import {Panel, Row} from 'react-bootstrap';
+import Link from './link.jsx';
 
-var Link = require('./link.jsx');
+class Links extends React.Component {
 
-var Links = React.createClass({
-  render: function() {
-    var store = this.props.store;
-    var selectLink = this.props.selectLink;
-    var links = this.props.links.toArray().map(function(link, i) {
+  render() {
+    const {store, selectLink} = this.props;
+    const links = this.props.links.toArray().map((link, i) => {
       return <Link key={i} store={store} link={link} selectLink={selectLink} />
     });
 
@@ -23,6 +20,7 @@ var Links = React.createClass({
       </div>
     );
   }
-});
 
-module.exports = Links;
+}
+
+export default Links;

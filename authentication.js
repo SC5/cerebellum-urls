@@ -1,15 +1,17 @@
-var router = require('express').Router();
-var mongoose = require('mongoose');
-var User = require("./api/models/user");
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+import express from 'express';
+import mongoose from 'mongoose';
+import User from './api/models/user';
+import {OAuth2Strategy as GoogleStrategy} from 'passport-google-oauth';
 
-module.exports = function(passport) {
+const router = express.Router();
+
+export default function(passport) {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   })
 
   passport.deserializeUser(function(id, done) {
-    User.load({ criteria: { _id: id } }, function (err, user) {
+    User.load({ criteria: { _id: id } }, function(err, user) {
       done(err, user);
     })
   });
@@ -20,10 +22,10 @@ module.exports = function(passport) {
       callbackURL: process.env.GOOGLE_CALLBACK_URL
     },
     function(accessToken, refreshToken, profile, done) {
-      var options = {
+      const options = {
         criteria: { 'google.id': profile.id }
       };
-      User.load(options, function (err, user) {
+      User.load(options, function(err, user) {
         if (err) return done(err);
         if (!user) {
           user = new User({
@@ -33,7 +35,7 @@ module.exports = function(passport) {
             provider: 'google',
             google: profile._json
           });
-          user.save(function (err) {
+          user.save(function(err) {
             if (err) console.log(err);
             return done(err, user);
           });

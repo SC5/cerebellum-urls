@@ -1,25 +1,37 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Crouton = require('react-crouton');
-var Panel = ReactBootstrap.Panel;
-var Button = ReactBootstrap.Button;
-var Input = ReactBootstrap.Input;
-var Glyphicon = ReactBootstrap.Glyphicon;
+import React from 'react';
+import {Panel, Button, Input, Glyphicon} from 'react-bootstrap';
+import Crouton from 'react-crouton';
+import Link from './link.jsx';
 
-var Link = require('./link.jsx');
+class LinkForm extends React.Component {
 
-var LinkForm = React.createClass({
-  getInitialState: function() {
-    return {
+  constructor(props, context) {
+    super(props);
+
+    this.context = context;
+
+    // this is fugly, I know
+    // with autobind this monstrosity would go away
+    this.buttons = this.buttons.bind(this);
+    this.errors = this.errors.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.add = this.add.bind(this);
+    this.linkState = this.linkState.bind(this);
+    this.clear = this.clear.bind(this);
+    this.update = this.update.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
+
+    this.state = {
       title: "",
       url: "",
       tags: "",
       id: null,
       errors: []
     };
-  },
-  componentWillReceiveProps: function(nextProps) {
-    var link = nextProps.link;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const link = nextProps.link;
 
     if (link) {
       this.setState({
@@ -31,84 +43,102 @@ var LinkForm = React.createClass({
     } else {
       this.clear();
     }
-  },
-  setErrors: function(error) {
-    var messages = Object.keys(error.result.errors).map(function(key) {
+  }
+
+  setErrors(error) {
+    const messages = Object.keys(error.result.errors).map(key => {
       return error.result.errors[key].message;
     });
-    var errors = [messages];
-    this.setState({errors: errors});
-  },
-  add: function(event) {
-    this.props.store.dispatch("create", "links", this.linkState()).catch(this.setErrors);
+    this.setState({errors: [messages]});
+  }
+
+  add(event) {
+    this.context.store.dispatch("create", "links", this.linkState()).catch(this.setErrors);
     this.clear();
-  },
-  linkState: function() {
+  }
+
+  linkState() {
     return {
       title: this.state.title.trim(),
       url: this.state.url.trim(),
-      tags: this.state.tags.trim().split(",").map(function(tag) { return tag.trim(); })
+      tags: this.state.tags.trim().split(",").map(tag => tag.trim())
     };
-  },
-  clear: function() {
+  }
+
+  clear() {
     this.setState({title: "", url: "", tags: "", id: null});
-  },
-  update: function(event) {
-    var self = this;
-    this.props.store.dispatch("update", "link", {id: this.state.id}, this.linkState()).then(function() {
-      self.props.selectLink(null);
-    }).catch(this.setErrors);
-  },
-  cancel: function(event) {
+  }
+
+  update(event) {
+    this.context.store.dispatch(
+      "update",
+      "link",
+      {id: this.state.id},
+      this.linkState()
+    )
+    .then(() => {
+      this.props.selectLink(null);
+    })
+    .catch(this.setErrors);
+  }
+
+  cancel(event) {
     this.props.selectLink(null);
-  },
-  changeTitle: function(event) {
-    this.setState({title: event.target.value, errors: []});
-  },
-  changeUrl: function(event) {
-    this.setState({url: event.target.value, errors: []});
-  },
-  changeTags: function(event) {
-    this.setState({tags: event.target.value, errors: []});
-  },
-  clearErrors: function() {
+  }
+
+  change(field, event) {
+    this.setState({[field]: event.target.value, errors: []});
+  }
+
+  clearErrors() {
     this.setState({errors: []});
-  },
-  render: function() {
-    var controls, errors;
+  }
+
+  buttons() {
     if (this.state.id) {
-      controls = (
+      return (
         <div>
           <Button className="add" bsStyle="primary" onClick={this.update}>Update</Button>
           <Button bsStyle="link" onClick={this.cancel}>Cancel</Button>
         </div>
       );
     } else {
-      controls = <Button className="add" bsStyle="primary" onClick={this.add}>Add</Button>;
+      return (
+        <Button className="add" bsStyle="primary" onClick={this.add}>Add</Button>
+      );
     }
+  }
 
+  errors() {
     if (this.state.errors.length) {
-      errors = (
+      return (
         <div className="alert alert-danger">
           <Crouton id={Date.now()} type="error" message={this.state.errors} buttons="close" autoMiss={false} onDismiss={this.clearErrors} />
         </div>
       );
     } else {
-      errors = null;
+      return null;
     }
+  }
 
+  render() {
     return (
       <div className="link-form">
-        {errors}
+        {this.errors()}
         <Panel>
-          <Input type="text" ref="title" addonBefore="Title" onChange={this.changeTitle} value={this.state.title} />
-          <Input type="text" ref="url" addonBefore={<span><Glyphicon glyph="link" />URL</span>} onChange={this.changeUrl} value={this.state.url} />
-          <Input type="text" ref="tags" addonBefore={<span><Glyphicon glyph="tags" />Tags</span>} placeholder="Separate tags with commas" onChange={this.changeTags} value={this.state.tags} />
-          {controls}
+          <Input type="text" ref="title" addonBefore="Title" onChange={this.change.bind(this, "title")} value={this.state.title} />
+          <Input type="text" ref="url" addonBefore={<span><Glyphicon glyph="link" />URL</span>} onChange={this.change.bind(this, "url")} value={this.state.url} />
+          <Input type="text" ref="tags" addonBefore={<span><Glyphicon glyph="tags" />Tags</span>} placeholder="Separate tags with commas" onChange={this.change.bind(this, "tags")} value={this.state.tags} />
+          {this.buttons()}
         </Panel>
       </div>
     );
   }
-});
 
-module.exports = LinkForm;
+}
+
+LinkForm.contextTypes = {
+  store: React.PropTypes.object
+};
+
+export default LinkForm;

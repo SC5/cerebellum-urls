@@ -1,29 +1,33 @@
-var React = require('react');
-var ReactBootstrap = require('react-bootstrap');
-var Col = ReactBootstrap.Col;
-var Label = ReactBootstrap.Label;
-var ButtonGroup = ReactBootstrap.ButtonGroup;
-var Button = ReactBootstrap.Button;
+import React from 'react';
+import {Col, Label, ButtonGroup, Button} from 'react-bootstrap';
 
-var Link = React.createClass({
+class Link extends React.Component {
 
-  edit: function() {
+  constructor(props, context) {
+    super(props);
+    this.context = context;
+    this.edit = this.edit.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
+  edit() {
     this.props.selectLink(this.props.link);
-  },
+  }
 
-  delete: function() {
-    this.props.store.dispatch("delete", "link", {id: this.props.link.get("_id")});
-  },
+  delete() {
+    this.context.store.dispatch("delete", "link", {id: this.props.link.get("_id")});
+  }
 
-  render: function() {
-    var link = this.props.link;
+  render() {
+    const link = this.props.link;
+    let tags = null;
+
     if (link.get("tags")) {
-      var tags = link.get("tags").toArray().map(function(tag, i) {
-        var key = tag +"_"+ i;
-        var url = "/tags/"+ tag;
-        return <a key={key} href={url}><Label>{tag}</Label></a>;
+      tags = link.get("tags").toArray().map((tag, i) => {
+        return <a key={`${tag}_${i}`} href={`/tags/${tag}`}><Label>{tag}</Label></a>;
       });
     }
+
     return (
       <Col className="link" xs={12} sm={6} md={4}>
         <div className="thumbnail">
@@ -41,6 +45,10 @@ var Link = React.createClass({
     );
   }
 
-});
+}
 
-module.exports = Link;
+Link.contextTypes = {
+  store: React.PropTypes.object
+};
+
+export default Link;
