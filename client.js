@@ -1,5 +1,5 @@
 import React from 'react';
-import {client as Cerebellum} from 'cerebellum';
+import Cerebellum from 'cerebellum/client';
 import options from './options';
 
 const appContainer = document.getElementById(options.appId);

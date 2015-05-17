@@ -14,6 +14,7 @@ import ConnectMongoStore from 'connect-mongostore';
 import options from './options';
 import UrlsAPI from './api';
 import AuthenticationFactory from './authentication';
+import request from 'request';
 
 // connect to our database
 const MongoStore = ConnectMongoStore(session);
@@ -68,6 +69,13 @@ options.middleware = [
 ];
 
 const app = Cerebellum(options);
+
+if (app.get('env') === 'development') {
+  // proxy /js to webpack-dev-server for react-hot-loader magic
+  app.use('/js', function(req, res) {
+    req.pipe(request(`http://localhost:4001/js${req.path}`)).pipe(res);
+  });
+}
 
 // load API routes
 app.use( "/api", UrlsAPI );

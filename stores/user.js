@@ -1,4 +1,4 @@
-var Model = require('cerebellum').Model;
+var Model = require('cerebellum/model');
 var apiConfig = require("../config/api");
 
 var User = Model.extend({

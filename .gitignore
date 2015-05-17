@@ -1,7 +1,9 @@
 node_modules
 .DS_Store
 .env
+npm-debug.log
 public/js/app.js
 public/js/lib.js
 public/css
+public/assets
 TODO

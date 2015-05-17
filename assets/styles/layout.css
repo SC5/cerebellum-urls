@@ -1,4 +1,4 @@
-@import (inline) "lib/css/bootstrap.min.css";
+@import "../lib/bootstrap.css";
 
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -61,8 +61,6 @@
 }
 
 .alert {
-  //background: #d62c1a;
-  //color: #fff;
   .crouton {
     .error {
       padding: 1rem;

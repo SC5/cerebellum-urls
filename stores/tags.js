@@ -1,5 +1,4 @@
-var cerebellum = require('cerebellum');
-var Collection = cerebellum.Collection;
+var Collection = require('cerebellum/collection');
 var apiConfig = require("../config/api");
 
 var Tags = Collection.extend({
