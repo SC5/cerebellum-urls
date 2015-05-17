@@ -51,7 +51,7 @@ module.exports = {
       },
       {
         test:   /\.css$/,
-        loader: "style-loader!css-loader!postcss-loader"
+        loader: "style-loader!css-loader?sourceMap!postcss-loader"
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
