@@ -1,0 +1,39 @@
+.LinkForm {
+
+  .LinkForm-add {
+    min-width: 100px;
+  }
+
+  .LinkForm-alert {
+    .crouton {
+      .error {
+        padding: 1rem;
+        position: relative;
+
+        span {
+          display: block;
+        }
+
+        .buttons {
+          position: absolute;
+          top: 1rem;
+          right: 2rem;
+
+          .close {
+            float: none;
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+  }
+
+  .input-group-addon {
+    min-width: 100px;
+  }
+
+  .input-group span.glyphicon {
+    margin-right: 10px;
+  }
+
+}

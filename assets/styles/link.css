@@ -1,0 +1,16 @@
+.Link {
+
+  .Link-tags {
+    min-height: 22px;
+  }
+
+  .Link-modify {
+    width: 100%;
+    text-align: right;
+  }
+
+  .label {
+    margin-right: 5px;
+  }
+
+}

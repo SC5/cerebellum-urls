@@ -23,7 +23,7 @@ class Index extends React.Component {
 
   loggedIn(user, links) {
     return (
-      <div>
+      <div className="Index">
         <Navigation user={user} />
         <LinkForm link={this.state.selectedLink} selectLink={this.selectLink} />
         <Links user={user} links={links} selectLink={this.selectLink} />
@@ -33,7 +33,7 @@ class Index extends React.Component {
 
   notLoggedIn(user, links) {
     return (
-      <div>
+      <div className="Index">
         <Navigation user={user} />
         <Jumbotron>
           <h1>urls</h1>

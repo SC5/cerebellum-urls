@@ -1,0 +1,11 @@
+.Navigation {
+  .Navigation-nav {
+    li.login a {
+      color: #27ae60;
+    }
+
+    li.logout a {
+      color: #c0392b;
+    }
+  }
+}

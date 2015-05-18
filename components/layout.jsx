@@ -1,4 +1,5 @@
 import React from 'react';
+import '../assets/styles/global.css';
 import '../assets/styles/layout.css';
 
 class Layout extends React.Component {
@@ -13,7 +14,7 @@ class Layout extends React.Component {
     // https://github.com/facebook/react/issues/3392
     let component = this.props.createComponent();
     return (
-      <div>
+      <div className="Layout">
         {component}
       </div>
     );

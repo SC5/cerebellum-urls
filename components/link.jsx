@@ -1,5 +1,6 @@
 import React from 'react';
 import {Col, Label, ButtonGroup, Button} from 'react-bootstrap';
+import '../assets/styles/link.css';
 
 class Link extends React.Component {
 
@@ -29,13 +30,13 @@ class Link extends React.Component {
     }
 
     return (
-      <Col className="link" xs={12} sm={6} md={4}>
+      <Col className="Link" xs={12} sm={6} md={4}>
         <div className="thumbnail">
           <div className="caption">
             <h3><a href={link.get("url")}>{link.get("title")}</a></h3>
             <p>{link.get("url")}</p>
-            <p className="tags">{tags}</p>
-            <p className="modify">
+            <p className="Link-tags">{tags}</p>
+            <p className="Link-modify">
               <Button bsStyle="link" bsSize="small" onClick={this.edit}>Edit</Button>
               <Button bsStyle="link" bsSize="small" onClick={this.delete}>Delete</Button>
             </p>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Navbar, NavItem, Nav} from 'react-bootstrap';
+import '../assets/styles/navigation.css';
 
 class Navigation extends React.Component {
 
@@ -9,7 +10,7 @@ class Navigation extends React.Component {
 
     if (this.props.user.get("_id")) {
       navigation = (
-        <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
+        <Nav className="Navigation-nav bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/tags">Tags</NavItem>
           <NavItem href="/profile">Profile</NavItem>
           <NavItem href="/logout" className="logout">Logout {this.props.user.get("email")}</NavItem>
@@ -17,14 +18,14 @@ class Navigation extends React.Component {
       );
     } else {
       navigation = (
-        <Nav className="bs-navbar-collapse" eventKey={0} role="navigation">
+        <Nav className="Navigation-nav bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/auth/google" className="login">Login with Google</NavItem>
         </Nav>
       );
     }
 
     return (
-      <Navbar brand={brand} fixedTop toggleNavKey={0}>
+      <Navbar className="Navigation" brand={brand} fixedTop toggleNavKey={0}>
         {navigation}
       </Navbar>
     );

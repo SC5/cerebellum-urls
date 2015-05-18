@@ -2,6 +2,7 @@ import React from 'react';
 import {Panel, Button, Input, Glyphicon} from 'react-bootstrap';
 import Crouton from 'react-crouton';
 import Link from './link.jsx';
+import '../assets/styles/link-form.css';
 
 class LinkForm extends React.Component {
 
@@ -17,6 +18,7 @@ class LinkForm extends React.Component {
     this.setErrors = this.setErrors.bind(this);
     this.add = this.add.bind(this);
     this.linkState = this.linkState.bind(this);
+    this.cancel = this.cancel.bind(this);
     this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
@@ -98,13 +100,13 @@ class LinkForm extends React.Component {
     if (this.state.id) {
       return (
         <div>
-          <Button className="add" bsStyle="primary" onClick={this.update}>Update</Button>
+          <Button className="LinkForm-add" bsStyle="primary" onClick={this.update}>Update</Button>
           <Button bsStyle="link" onClick={this.cancel}>Cancel</Button>
         </div>
       );
     } else {
       return (
-        <Button className="add" bsStyle="primary" onClick={this.add}>Add</Button>
+        <Button className="LinkForm-add" bsStyle="primary" onClick={this.add}>Add</Button>
       );
     }
   }
@@ -112,7 +114,7 @@ class LinkForm extends React.Component {
   errors() {
     if (this.state.errors.length) {
       return (
-        <div className="alert alert-danger">
+        <div className="LinkForm-alert alert alert-danger">
           <Crouton id={Date.now()} type="error" message={this.state.errors} buttons="close" autoMiss={false} onDismiss={this.clearErrors} />
         </div>
       );
@@ -123,7 +125,7 @@ class LinkForm extends React.Component {
 
   render() {
     return (
-      <div className="link-form">
+      <div className="LinkForm">
         {this.errors()}
         <Panel>
           <Input type="text" ref="title" addonBefore="Title" onChange={this.change.bind(this, "title")} value={this.state.title} />
