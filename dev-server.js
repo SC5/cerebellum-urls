@@ -5,7 +5,7 @@ var config = require('./webpack.dev.config');
 // create webpack dev server instance for react-hot-loader
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
-  contentBase: 'http://localhost:4000',
+  proxy: {'*': 'http://localhost:4000'},
   hot: true,
   historyApiFallback: true
 }).listen(4001, 'localhost', function (err, result) {

@@ -70,13 +70,6 @@ options.middleware = [
 
 const app = Cerebellum(options);
 
-if (app.get('env') === 'development') {
-  // proxy /js to webpack-dev-server for react-hot-loader magic
-  app.use('/js', function(req, res) {
-    req.pipe(request(`http://localhost:4001/js${req.path}`)).pipe(res);
-  });
-}
-
 // load API routes
 app.use( "/api", UrlsAPI );
 
