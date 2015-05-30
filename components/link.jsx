@@ -4,6 +4,10 @@ import '../assets/styles/link.css';
 
 class Link extends React.Component {
 
+  static contextTypes = {
+    store: React.PropTypes.object
+  }
+
   constructor(props, context) {
     super(props);
     this.context = context;
@@ -47,9 +51,5 @@ class Link extends React.Component {
   }
 
 }
-
-Link.contextTypes = {
-  store: React.PropTypes.object
-};
 
 export default Link;

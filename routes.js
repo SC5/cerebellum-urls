@@ -6,6 +6,5 @@ import Tags from './components/tags.jsx';
 export default {
   "/": Index,
   "/profile": Profile,
-  "/tags": Tags,
-  "/tags/:id": Tags
+  "/tags": Tags
 };

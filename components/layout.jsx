@@ -4,6 +4,10 @@ import '../assets/styles/layout.css';
 
 class Layout extends React.Component {
 
+  static childContextTypes = {
+    store: React.PropTypes.object
+  }
+
   getChildContext() {
     return {
       store: this.props.store
@@ -12,18 +16,13 @@ class Layout extends React.Component {
 
   render() {
     // https://github.com/facebook/react/issues/3392
-    let component = this.props.createComponent();
     return (
       <div className="Layout">
-        {component}
+        {this.props.createComponent()}
       </div>
     );
   }
 
 }
-
-Layout.childContextTypes = {
-  store: React.PropTypes.object
-};
 
 export default Layout;

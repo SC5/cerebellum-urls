@@ -1,30 +1,23 @@
 import React from 'react';
 import Cerebellum from 'cerebellum/client';
+import renderClient from 'cerebellum-react/render-client-nested'
+import routeHandler from 'cerebellum-react/route-handler-nested';
 import options from './options';
 
-const appContainer = document.getElementById(options.appId);
 const Layout = React.createFactory(require('./components/layout.jsx'));
 
-options.render = function(component, request={}) {
-  const componentFactory = React.createFactory(component);
-  const store = this.store;
-  return new Promise(function(resolve, reject) {
-    return store.fetchAll(component.stores(request)).then(storeProps => {
-      const props = typeof component.preprocess === "function" ? component.preprocess(storeProps, request) : storeProps;
-      const title = typeof component.title === "function" ? component.title(storeProps) : component.title;
-      document.getElementsByTagName("title")[0].innerHTML = title;
-      resolve(
-        React.render(
-          Layout({
-            createComponent: () => { return componentFactory(props) },
-            store: store
-          }),
-          document.getElementById(options.appId)
-          )
-        );
-    }).catch(reject);
-  });
-};
+options.routeHandler = routeHandler;
+options.render = renderClient(React, {
+  storeId: options.storeId,
+  appId: options.appId,
+  prependTitle: "urls - ",
+  containerComponent: (store, component, props) => {
+    return Layout({
+      createComponent: () => { return component() },
+      store: store
+    });
+  }
+});
 
 options.initialize = function(client) {
   React.initializeTouchEvents(true);

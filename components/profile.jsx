@@ -5,6 +5,14 @@ import '../assets/styles/profile.css';
 
 class Profile extends React.Component {
 
+  static title = "your profile"
+
+  static stores = (request) => {
+    return {
+      "user": {}
+    };
+  }
+
   render() {
     const user = this.props.user;
 
@@ -24,13 +32,5 @@ class Profile extends React.Component {
   }
 
 }
-
-Profile.title = "urls - your profile";
-
-Profile.stores = (request) => {
-  return {
-    "user": {}
-  };
-};
 
 export default Profile;

@@ -5,6 +5,8 @@ dotenv.load();
 import React from 'react';
 import mongoose from 'mongoose';
 import {server as Cerebellum} from 'cerebellum';
+import renderServer from 'cerebellum-react/render-server-nested'
+import routeHandler from 'cerebellum-react/route-handler-nested';
 import compress from 'compression';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
@@ -21,30 +23,20 @@ const MongoStore = ConnectMongoStore(session);
 const mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
 mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME);
 
-const appId = options.appId;
 const Layout = React.createFactory(require('./components/layout.jsx'));
 
-options.render = function render(document, component, request) {
-  const componentFactory = React.createFactory(component);
-  const store = this.store;
-  return new Promise(function(resolve, reject) {
-    store.fetchAll(component.stores(request)).then(storeProps => {
-      const props = typeof component.preprocess === "function" ? component.preprocess(storeProps, request) : storeProps;
-      const title = typeof component.title === "function" ? component.title(storeProps) : component.title;
-      document("title").html(title);
-      document(`#${options.storeId}`).text(store.snapshot());
-      document(`#${options.appId}`).html(
-        React.renderToString(
-          Layout({
-            createComponent: () => { return componentFactory(props) },
-            store: store
-          })
-        )
-      );
-      resolve(document.html());
-    }).catch(reject);
-  });
-};
+options.routeHandler = routeHandler;
+options.render = renderServer(React, {
+  storeId: options.storeId,
+  appId: options.appId,
+  prependTitle: "urls - ",
+  containerComponent: (store, component, props) => {
+    return Layout({
+      createComponent: () => { return component() },
+      store: store
+    });
+  }
+});
 
 options.middleware = [
   compress(),

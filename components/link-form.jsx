@@ -6,6 +6,10 @@ import '../assets/styles/link-form.css';
 
 class LinkForm extends React.Component {
 
+  static contextTypes = {
+    store: React.PropTypes.object
+  }
+
   constructor(props, context) {
     super(props);
 
@@ -68,7 +72,12 @@ class LinkForm extends React.Component {
   }
 
   clear() {
-    this.setState({title: "", url: "", tags: "", id: null});
+    this.setState({
+      title: "",
+      url: "",
+      tags: "",
+      id: null
+    });
   }
 
   update(event) {
@@ -138,9 +147,5 @@ class LinkForm extends React.Component {
   }
 
 }
-
-LinkForm.contextTypes = {
-  store: React.PropTypes.object
-};
 
 export default LinkForm;

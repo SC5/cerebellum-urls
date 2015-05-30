@@ -7,6 +7,15 @@ import LinkForm from './link-form.jsx';
 
 class Index extends React.Component {
 
+  static title = "save and tag your urls"
+
+  static stores = (request) => {
+    return {
+      "user": {},
+      "links": {}
+    };
+  }
+
   constructor(props) {
     super(props);
 
@@ -53,15 +62,6 @@ class Index extends React.Component {
     }
   }
 
-}
-
-Index.title = "urls - save and tag your urls";
-
-Index.stores = (request) => {
-  return {
-    "user": {},
-    "links": {}
-  };
 }
 
 export default Index;

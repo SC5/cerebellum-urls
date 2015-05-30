@@ -11,7 +11,7 @@ class Links extends React.Component {
     });
 
     return (
-      <div>
+      <div className="Links">
         <Panel>
           <Row>
             {links}
