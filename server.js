@@ -5,8 +5,7 @@ dotenv.load();
 import React from 'react';
 import mongoose from 'mongoose';
 import {server as Cerebellum} from 'cerebellum';
-import renderServer from 'cerebellum-react/render-server-nested'
-import routeHandler from 'cerebellum-react/route-handler-nested';
+import CerebellumReact from 'cerebellum-react'
 import compress from 'compression';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
@@ -22,21 +21,6 @@ import request from 'request';
 const MongoStore = ConnectMongoStore(session);
 const mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
 mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME);
-
-const Layout = React.createFactory(require('./components/layout.jsx'));
-
-options.routeHandler = routeHandler;
-options.render = renderServer(React, {
-  storeId: options.storeId,
-  appId: options.appId,
-  prependTitle: "urls - ",
-  containerComponent: (store, component, props) => {
-    return Layout({
-      createComponent: () => { return component() },
-      store: store
-    });
-  }
-});
 
 options.middleware = [
   compress(),
@@ -60,7 +44,17 @@ options.middleware = [
   passport.session()
 ];
 
-const app = Cerebellum(options);
+// cerebellum-react specific options
+const Layout = React.createFactory(require('./components/layout.jsx'));
+options.prependTitle = "urls - ";
+options.containerComponent = (store, component, props) => {
+  return Layout({
+    createComponent: () => { return component() },
+    store: store
+  });
+};
+
+const app = CerebellumReact(Cerebellum, React, options);
 
 // load API routes
 app.use( "/api", UrlsAPI );

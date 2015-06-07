@@ -1,23 +1,7 @@
 import React from 'react';
 import Cerebellum from 'cerebellum/client';
-import renderClient from 'cerebellum-react/render-client-nested'
-import routeHandler from 'cerebellum-react/route-handler-nested';
+import CerebellumReact from 'cerebellum-react'
 import options from './options';
-
-const Layout = React.createFactory(require('./components/layout.jsx'));
-
-options.routeHandler = routeHandler;
-options.render = renderClient(React, {
-  storeId: options.storeId,
-  appId: options.appId,
-  prependTitle: "urls - ",
-  containerComponent: (store, component, props) => {
-    return Layout({
-      createComponent: () => { return component() },
-      store: store
-    });
-  }
-});
 
 options.initialize = function(client) {
   React.initializeTouchEvents(true);
@@ -37,4 +21,14 @@ options.initialize = function(client) {
 // clear caches automatically after create, update & delete
 options.autoClearCaches = true;
 
-Cerebellum(options);
+// cerebellum-react specific options
+const Layout = React.createFactory(require('./components/layout.jsx'));
+options.prependTitle = "urls - ";
+options.containerComponent = (store, component, props) => {
+  return Layout({
+    createComponent: () => { return component() },
+    store: store
+  });
+};
+
+CerebellumReact(Cerebellum, React, options);
