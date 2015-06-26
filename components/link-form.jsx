@@ -41,10 +41,10 @@ class LinkForm extends React.Component {
 
     if (link) {
       this.setState({
-        id: link.get("_id"),
-        title: link.get("title"),
-        url: link.get("url"),
-        tags: link.get("tags").join(",")
+        id: link._id,
+        title: link.title,
+        url: link.url,
+        tags: link.tags.join(",")
       });
     } else {
       this.clear();

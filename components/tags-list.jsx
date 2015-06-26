@@ -12,7 +12,7 @@ class TagsList extends React.Component {
   }
 
   render() {
-    const tags = this.props.tags.toArray().map(tag => <Tag tag={tag} />);
+    const tags = this.props.tags.map(tag => <Tag tag={tag} />);
     return (
       <div className="Tags-list">
         <h3>All tags</h3>

@@ -9,19 +9,19 @@ class Profile extends React.Component {
 
   static stores = (request) => {
     return {
-      "user": {}
+      "users": {}
     };
   }
 
   render() {
-    const user = this.props.user;
+    const user = this.props.users[0];
 
     return (
       <div className="Profile">
         <Navigation user={user} />
 
         <Jumbotron>
-          <h1>{user.get("name")}</h1>
+          <h1>{user.name}</h1>
         </Jumbotron>
 
         <Panel>

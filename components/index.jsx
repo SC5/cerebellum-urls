@@ -11,7 +11,7 @@ class Index extends React.Component {
 
   static stores = (request) => {
     return {
-      "user": {},
+      "users": {},
       "links": {}
     };
   }
@@ -53,9 +53,9 @@ class Index extends React.Component {
   }
 
   render() {
-    let {user, links} = this.props;
-
-    if (user.get("_id")) {
+    let {users, links} = this.props;
+    const user = users[0] || {};
+    if (user._id) {
       return this.loggedIn(user, links);
     } else {
       return this.notLoggedIn(user, links);

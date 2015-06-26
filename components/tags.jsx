@@ -12,12 +12,12 @@ class Tags extends React.Component {
 
   static stores = (request) => {
     return {
-      "user": {}
+      "users": {}
     };
   }
 
   render() {
-    const {user} = this.props;
+    const user = this.props.users[0];
     return (
       <div className="Tags">
         <Navigation user={user} />

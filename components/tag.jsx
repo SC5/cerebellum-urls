@@ -7,12 +7,12 @@ class Tag extends React.Component {
     const {tag} = this.props;
 
     return (
-      <Panel key={tag.get("id")} header={tag.get("id")}>
+      <Panel key={tag.id} header={tag.id}>
         <ListGroup>
-          {tag.get("links").toArray().map((link, i) => {
+          {tag.links.map((link, i) => {
             return (
-              <ListGroupItem key={`link_${i}`} href={link.get("url")}>
-                {link.get("title")}
+              <ListGroupItem key={`link_${i}`} href={link.url}>
+                {link.title}
               </ListGroupItem>
             );
           })}

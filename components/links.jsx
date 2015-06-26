@@ -6,7 +6,7 @@ class Links extends React.Component {
 
   render() {
     const {store, selectLink} = this.props;
-    const links = this.props.links.toArray().map((link, i) => {
+    const links = this.props.links.map((link, i) => {
       return <Link key={i} store={store} link={link} selectLink={selectLink} />
     });
 

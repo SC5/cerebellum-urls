@@ -8,12 +8,12 @@ class Navigation extends React.Component {
     const brand = <a href="/" className="navbar-brand">urls</a>;
     let navigation = null;
 
-    if (this.props.user.get("_id")) {
+    if (this.props.user._id) {
       navigation = (
         <Nav className="Navigation-nav bs-navbar-collapse" eventKey={0} role="navigation">
           <NavItem href="/tags">Tags</NavItem>
           <NavItem href="/profile">Profile</NavItem>
-          <NavItem href="/logout" className="logout">Logout {this.props.user.get("email")}</NavItem>
+          <NavItem href="/logout" className="logout">Logout {this.props.user.email}</NavItem>
         </Nav>
       );
     } else {

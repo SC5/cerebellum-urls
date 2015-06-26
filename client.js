@@ -11,11 +11,11 @@ options.initialize = function(client) {
   }
 
   // re-render current route handler when Store cache changes, optimistic updates
-  client.store.cached.on('swap', () => reloadIndex());
+  client.store.onSwap((newState, oldState, path) => reloadIndex());
 
-  client.store.on("create:links", reloadIndex);
-  client.store.on("delete:link", reloadIndex);
-  client.store.on("update:link", reloadIndex);
+  // client.store.on("create:links", reloadIndex);
+  // client.store.on("delete:link", reloadIndex);
+  // client.store.on("update:link", reloadIndex);
 };
 
 // clear caches automatically after create, update & delete

@@ -35,6 +35,7 @@ module.exports = {
         // TODO: this is fugly, figure out better way to prevent
         // 'npm link':ed modules from causing problems
         include: [
+          path.join(__dirname, 'actions.js'),
           path.join(__dirname, 'client.js'),
           path.join(__dirname, 'options.js'),
           path.join(__dirname, 'routes.js'),
