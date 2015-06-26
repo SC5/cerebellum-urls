@@ -1,6 +1,7 @@
 import React from 'react';
 import Cerebellum from 'cerebellum/client';
-import CerebellumReact from 'cerebellum-react'
+import CerebellumReact from 'cerebellum-react';
+import state from './state';
 import options from './options';
 
 options.initialize = function(client) {
@@ -31,4 +32,4 @@ options.containerComponent = (store, component, props) => {
   });
 };
 
-CerebellumReact(Cerebellum, React, options);
+CerebellumReact(Cerebellum, React, state, options);

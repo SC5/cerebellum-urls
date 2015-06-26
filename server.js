@@ -5,13 +5,14 @@ dotenv.load();
 import React from 'react';
 import mongoose from 'mongoose';
 import {server as Cerebellum} from 'cerebellum';
-import CerebellumReact from 'cerebellum-react'
+import CerebellumReact from 'cerebellum-react';
 import compress from 'compression';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import ConnectMongoStore from 'connect-mongostore';
+import state from './state';
 import options from './options';
 import UrlsAPI from './api';
 import AuthenticationFactory from './authentication';
@@ -54,7 +55,7 @@ options.containerComponent = (store, component, props) => {
   });
 };
 
-const app = CerebellumReact(Cerebellum, React, options);
+const app = CerebellumReact(Cerebellum, React, state, options);
 
 // load API routes
 app.use( "/api", UrlsAPI );
