@@ -13,24 +13,24 @@ const tagActions = {
 };
 
 const linkFormActions = {
-  selectLink: (state, selectedLink={}) => state.update(oldState => {
+  selectLink(state, selectedLink={}) {
     return {
-      ...oldState,
+      ...state,
       selectedLink: selectedLink
     };
-  }),
-  setErrors: (state, response) => state.update(oldState => {
+  },
+  setErrors(state, response) {
     return {
-      ...oldState,
+      ...state,
       errors: Object.keys(response.errors).map(key => response.errors[key].message)
     };
-  }),
-  clearErrors: (state) => state.update(oldState => {
-    return {...oldState, errors: []};
-  }),
-  clear: (state) => state.update(oldState => {
+  },
+  clearErrors(state) {
+    return {...state, errors: []};
+  },
+  clear(state) {
     return {
-      ...oldState,
+      ...state,
       selectedLink: {
         title: "",
         url: "",
@@ -39,16 +39,16 @@ const linkFormActions = {
       },
       errors: []
     };
-  }),
-  update: (state, key, value) => state.update(oldState => {
+  },
+  update(state, key, value) {
     return {
-      ...oldState,
+      ...state,
       selectedLink: {
-        ...oldState.selectedLink,
+        ...state.selectedLink,
         [key]: value
       }
     };
-  })
+  }
 };
 
 export default {
