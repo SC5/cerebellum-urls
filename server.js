@@ -4,7 +4,7 @@ dotenv.load();
 
 import React from 'react';
 import mongoose from 'mongoose';
-import {server as Cerebellum} from 'cerebellum';
+import Cerebellum from 'cerebellum/server';
 import CerebellumReact from 'cerebellum-react';
 import compress from 'compression';
 import passport from 'passport';
@@ -49,10 +49,7 @@ options.middleware = [
 const Layout = React.createFactory(require('./components/layout.jsx'));
 options.prependTitle = "urls - ";
 options.containerComponent = (store, component, props) => {
-  return Layout({
-    createComponent: () => { return component() },
-    store: store
-  });
+  return Layout({store: store}, component);
 };
 
 const app = CerebellumReact(Cerebellum, React, state, options);

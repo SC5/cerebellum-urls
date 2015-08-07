@@ -4,7 +4,11 @@ import CerebellumReact from 'cerebellum-react';
 import state from './state';
 import options from './options';
 
+import {observers} from 'cerebellum';
+
 options.initialize = function(client) {
+
+  const eventsObserver = observers.init("urls/events");
   React.initializeTouchEvents(true);
 
   function reloadIndex() {
@@ -12,24 +16,39 @@ options.initialize = function(client) {
   }
 
   // re-render current route handler when Store cache changes, optimistic updates
-  client.store.onSwap((newState, oldState, path) => reloadIndex());
+  eventsObserver.add(
+    client.store.onSwap((newState, oldState, path) => {
+      if (path && path[0] !== "log") {
+        reloadIndex();
+      }
+    })
+  );
 
-  // client.store.on("create:links", reloadIndex);
-  // client.store.on("delete:link", reloadIndex);
-  // client.store.on("update:link", reloadIndex);
+  eventsObserver.add(
+    client.store.observeEvents((lastEvent) => {
+      if (lastEvent.storeId === "links" && lastEvent.title.match("fail")) {
+        client.store.actions.linkForm.setErrors(lastEvent.args[2].data);
+      }
+
+      if (lastEvent.storeId === "links" && lastEvent.title.match("success")) {
+        client.store.actions.linkForm.clear();
+      }
+    })
+  );
 };
-
-// clear caches automatically after create, update & delete
-options.autoClearCaches = true;
 
 // cerebellum-react specific options
 const Layout = React.createFactory(require('./components/layout.jsx'));
 options.prependTitle = "urls - ";
 options.containerComponent = (store, component, props) => {
-  return Layout({
-    createComponent: () => { return component() },
-    store: store
-  });
+  return Layout({store: store}, component);
 };
 
 CerebellumReact(Cerebellum, React, state, options);
+
+// TODO: refactor this out when react-hot-loader supports hot reloading functions
+class ClientRenderer {
+  render() {}
+}
+
+export default ClientRenderer;

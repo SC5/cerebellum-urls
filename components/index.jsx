@@ -5,42 +5,54 @@ import Navigation from './navigation.jsx';
 import Links from './links.jsx';
 import LinkForm from './link-form.jsx';
 
-class Index extends React.Component {
+import PureComponent from './pure.jsx';
+
+class Index extends PureComponent {
 
   static title = "save and tag your urls"
 
-  static stores = (request) => {
+  static actions = {
+    linkForm: ["selectLink", "clear", "clearErrors", "update"],
+    links: ["create", "update", "remove"]
+  }
+
+  static stores = () => {
     return {
-      "users": {},
-      "links": {}
+      users: {},
+      links: {},
+      linkForm: {}
     };
   }
 
-  constructor(props) {
-    super(props);
+  static preprocess = (props) => {
+    props.linkForm.selectedLink.tags = Array.isArray(props.linkForm.selectedLink.tags)
+      ? props.linkForm.selectedLink.tags.join(",")
+      : props.linkForm.selectedLink.tags;
 
-    this.state = {
-      selectedLink: null
-    };
-
-    this.selectLink = this.selectLink.bind(this);
+    return props;
   }
 
-  selectLink(link) {
-    this.setState({selectedLink: link});
-  }
-
-  loggedIn(user, links) {
+  loggedIn(props) {
+    const {users, links, linkForm, actions} = props;
+    const user = users[0] || {};
     return (
       <div className="Index">
         <Navigation user={user} />
-        <LinkForm link={this.state.selectedLink} selectLink={this.selectLink} />
-        <Links user={user} links={links} selectLink={this.selectLink} />
+        <LinkForm
+          state={linkForm}
+          formActions={actions.linkForm}
+          linkActions={actions.links} />
+        <Links
+          user={user}
+          links={links}
+          selectLink={actions.linkForm.selectLink}
+          remove={actions.links.remove}
+          clear={actions.linkForm.clear} />
       </div>
     );
   }
 
-  notLoggedIn(user, links) {
+  notLoggedIn(user) {
     return (
       <div className="Index">
         <Navigation user={user} />
@@ -53,12 +65,11 @@ class Index extends React.Component {
   }
 
   render() {
-    let {users, links} = this.props;
-    const user = users[0] || {};
+    const user = this.props.users[0] || {};
     if (user._id) {
-      return this.loggedIn(user, links);
+      return this.loggedIn(this.props);
     } else {
-      return this.notLoggedIn(user, links);
+      return this.notLoggedIn(user);
     }
   }
 

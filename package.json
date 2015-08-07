@@ -48,6 +48,7 @@
     "lodash": "^3.8.0",
     "mongoose": "^4.0.2",
     "native-promise-only": "^0.7.8-a",
+    "omniscient": "^3.2.0",
     "passport": "^0.2.1",
     "passport-google-oauth": "^0.2.0",
     "react": "^0.13.2",

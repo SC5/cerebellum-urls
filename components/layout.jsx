@@ -18,7 +18,7 @@ class Layout extends React.Component {
     // https://github.com/facebook/react/issues/3392
     return (
       <div className="Layout">
-        {this.props.createComponent()}
+        {this.props.children()}
       </div>
     );
   }

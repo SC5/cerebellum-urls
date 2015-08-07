@@ -2,34 +2,25 @@ import React from 'react';
 import {Col, Label, ButtonGroup, Button} from 'react-bootstrap';
 import '../assets/styles/link.css';
 
-class Link extends React.Component {
+import PureComponent from './pure.jsx';
+
+class Link extends PureComponent {
 
   static contextTypes = {
     store: React.PropTypes.object
   }
 
-  constructor(props, context) {
-    super(props);
-    this.context = context;
-    this.edit = this.edit.bind(this);
-    this.delete = this.delete.bind(this);
-  }
-
-  edit() {
-    this.props.selectLink(this.props.link);
-  }
-
-  delete() {
-    this.context.store.dispatch("delete", "link", {id: this.props.link._id});
-  }
-
   render() {
-    const link = this.props.link;
+    const {clear, link, remove, selectLink} = this.props;
     let tags = null;
 
     if (link.tags) {
       tags = link.tags.map((tag, i) => {
-        return <a key={`${tag}_${i}`} href={`/tags/${tag}`}><Label>{tag}</Label></a>;
+        return (
+          <a key={`${tag}_${i}`} href={`/tags/${tag}`}>
+            <Label>{tag}</Label>
+          </a>
+        );
       });
     }
 
@@ -41,8 +32,8 @@ class Link extends React.Component {
             <p>{link.url}</p>
             <p className="Link-tags">{tags}</p>
             <p className="Link-modify">
-              <Button bsStyle="link" bsSize="small" onClick={this.edit}>Edit</Button>
-              <Button bsStyle="link" bsSize="small" onClick={this.delete}>Delete</Button>
+              <Button bsStyle="link" bsSize="small" onClick={() => { clear(); selectLink(link)}}>Edit</Button>
+              <Button bsStyle="link" bsSize="small" onClick={() => remove({id: link._id})}>Delete</Button>
             </p>
           </div>
         </div>

@@ -2,129 +2,77 @@ import React from 'react';
 import {Panel, Button, Input, Glyphicon} from 'react-bootstrap';
 import Crouton from 'react-crouton';
 import Link from './link.jsx';
+import PureComponent from './pure.jsx';
+
 import '../assets/styles/link-form.css';
 
-class LinkForm extends React.Component {
+function formatState(state) {
+  return {
+    title: state.selectedLink.title.trim(),
+    url: state.selectedLink.url.trim(),
+    tags: state.selectedLink.tags.trim().split(",").map(tag => tag.trim())
+  };
+}
+
+class LinkForm extends PureComponent {
 
   static contextTypes = {
     store: React.PropTypes.object
   }
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    this.context = context;
-
-    // this is fugly, I know
-    // with autobind this monstrosity would go away
     this.buttons = this.buttons.bind(this);
     this.errors = this.errors.bind(this);
-    this.setErrors = this.setErrors.bind(this);
     this.add = this.add.bind(this);
-    this.linkState = this.linkState.bind(this);
-    this.cancel = this.cancel.bind(this);
-    this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
-
-    this.state = {
-      title: "",
-      url: "",
-      tags: "",
-      id: null,
-      errors: []
-    };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const link = nextProps.link;
-
-    if (link) {
-      this.setState({
-        id: link._id,
-        title: link.title,
-        url: link.url,
-        tags: link.tags.join(",")
-      });
-    } else {
-      this.clear();
-    }
+  add(state, linkActions, formActions) {
+    linkActions.create({}, formatState(state));
   }
 
-  setErrors(error) {
-    const messages = Object.keys(error.result.errors).map(key => {
-      return error.result.errors[key].message;
-    });
-    this.setState({errors: [messages]});
+  update(state, linkActions, formActions) {
+    linkActions.update({id: state.selectedLink._id}, formatState(state));
   }
 
-  add(event) {
-    this.context.store.dispatch("create", "links", this.linkState()).catch(this.setErrors);
-    this.clear();
-  }
-
-  linkState() {
-    return {
-      title: this.state.title.trim(),
-      url: this.state.url.trim(),
-      tags: this.state.tags.trim().split(",").map(tag => tag.trim())
-    };
-  }
-
-  clear() {
-    this.setState({
-      title: "",
-      url: "",
-      tags: "",
-      id: null
-    });
-  }
-
-  update(event) {
-    this.context.store.dispatch(
-      "update",
-      "link",
-      {id: this.state.id},
-      this.linkState()
-    )
-    .then(() => {
-      this.props.selectLink(null);
-    })
-    .catch(this.setErrors);
-  }
-
-  cancel(event) {
-    this.props.selectLink(null);
-  }
-
-  change(field, event) {
-    this.setState({[field]: event.target.value, errors: []});
-  }
-
-  clearErrors() {
-    this.setState({errors: []});
-  }
-
-  buttons() {
-    if (this.state.id) {
+  buttons(state, linkActions, formActions) {
+    if (state.selectedLink._id) {
       return (
         <div>
-          <Button className="LinkForm-add" bsStyle="primary" onClick={this.update}>Update</Button>
-          <Button bsStyle="link" onClick={this.cancel}>Cancel</Button>
+          <Button
+            className="LinkForm-add"
+            bsStyle="primary"
+            onClick={() => this.update(state, linkActions, formActions)}>Update</Button>
+          <Button
+            bsStyle="link"
+            onClick={() => formActions.clear()}>Cancel</Button>
         </div>
       );
     } else {
       return (
-        <Button className="LinkForm-add" bsStyle="primary" onClick={this.add}>Add</Button>
+        <Button
+          className="LinkForm-add"
+          bsStyle="primary"
+          onClick={() => this.add(state, linkActions, formActions)}>Add</Button>
       );
     }
   }
 
-  errors() {
-    if (this.state.errors.length) {
+  errors(state, formActions) {
+    //console.log("LINK ERRORS", state.errors);
+
+    if (state.errors.length) {
       return (
         <div className="LinkForm-alert alert alert-danger">
-          <Crouton id={Date.now()} type="error" message={this.state.errors} buttons="close" autoMiss={false} onDismiss={this.clearErrors} />
+          <Crouton
+            id={Date.now()}
+            type="error"
+            message={state.errors[0]}
+            buttons="close"
+            autoMiss={false}
+            onDismiss={formActions.clearErrors} />
         </div>
       );
     } else {
@@ -133,14 +81,37 @@ class LinkForm extends React.Component {
   }
 
   render() {
+    const {
+      state,
+      formActions,
+      linkActions
+    } = this.props;
+
     return (
       <div className="LinkForm">
-        {this.errors()}
+        {this.errors(state, formActions)}
         <Panel>
-          <Input type="text" ref="title" addonBefore="Title" onChange={this.change.bind(this, "title")} value={this.state.title} />
-          <Input type="text" ref="url" addonBefore={<span><Glyphicon glyph="link" />URL</span>} onChange={this.change.bind(this, "url")} value={this.state.url} />
-          <Input type="text" ref="tags" addonBefore={<span><Glyphicon glyph="tags" />Tags</span>} placeholder="Separate tags with commas" onChange={this.change.bind(this, "tags")} value={this.state.tags} />
-          {this.buttons()}
+          <Input
+            type="text"
+            ref="title"
+            addonBefore="Title"
+            onChange={(e) => formActions.update("title", e.target.value)}
+            value={state.selectedLink.title} />
+          <Input
+            type="text"
+            ref="url"
+            addonBefore={<span><Glyphicon glyph="link" />URL</span>}
+            onChange={(e) => formActions.update("url", e.target.value)}
+            value={state.selectedLink.url} />
+          <Input
+            type="text"
+            ref="tags"
+            addonBefore={<span><Glyphicon glyph="tags" />Tags</span>}
+            placeholder="Separate tags with commas"
+            onChange={(e) => formActions.update("tags", e.target.value)}
+            value={state.selectedLink.tags} />
+
+          {this.buttons(state, linkActions, formActions)}
         </Panel>
       </div>
     );

@@ -5,16 +5,25 @@ import Link from './link.jsx';
 class Links extends React.Component {
 
   render() {
-    const {store, selectLink} = this.props;
-    const links = this.props.links.map((link, i) => {
-      return <Link key={i} store={store} link={link} selectLink={selectLink} />
-    });
+    const {clear, links, store, selectLink, remove} = this.props;
 
     return (
       <div className="Links">
         <Panel>
           <Row>
-            {links}
+            {
+              links.map((link, i) => {
+                return (
+                  <Link
+                    key={i}
+                    store={store}
+                    link={link}
+                    selectLink={selectLink}
+                    clear={clear}
+                    remove={remove} />
+                );
+              })
+            }
           </Row>
         </Panel>
       </div>
