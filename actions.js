@@ -16,7 +16,7 @@ const linkFormActions = {
   selectLink(state, selectedLink={}) {
     return {
       ...state,
-      selectedLink: selectedLink
+      selectedLink: {...selectedLink}
     };
   },
   setErrors(state, response) {
