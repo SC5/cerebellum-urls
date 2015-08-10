@@ -4,37 +4,15 @@ import CerebellumReact from 'cerebellum-react';
 import state from './state';
 import options from './options';
 
-import {observers} from 'cerebellum';
-
 options.initialize = function(client) {
-
-  const eventsObserver = observers.init("urls/events");
   React.initializeTouchEvents(true);
 
-  function reloadIndex() {
-    client.router.replace(document.location.pathname);
-  }
-
   // re-render current route handler when Store cache changes, optimistic updates
-  eventsObserver.add(
-    client.store.onSwap((newState, oldState, path) => {
-      if (path && path[0] !== "log") {
-        reloadIndex();
-      }
-    })
-  );
-
-  eventsObserver.add(
-    client.store.observeEvents((lastEvent) => {
-      if (lastEvent.storeId === "links" && lastEvent.title.match("fail")) {
-        client.store.actions.linkForm.setErrors(lastEvent.args[2].data);
-      }
-
-      if (lastEvent.storeId === "links" && lastEvent.title.match("success")) {
-        client.store.actions.linkForm.clear();
-      }
-    })
-  );
+  client.onStateChange((state, previousState, path) => {
+    if (path && path[0] !== "log") {
+      client.router.replace(document.location.pathname);
+    }
+  });
 };
 
 // cerebellum-react specific options

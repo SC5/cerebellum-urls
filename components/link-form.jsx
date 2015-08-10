@@ -61,15 +61,13 @@ class LinkForm extends PureComponent {
   }
 
   errors(state, formActions) {
-    //console.log("LINK ERRORS", state.errors);
-
     if (state.errors.length) {
       return (
         <div className="LinkForm-alert alert alert-danger">
           <Crouton
             id={Date.now()}
             type="error"
-            message={state.errors[0]}
+            message={state.errors}
             buttons="close"
             autoMiss={false}
             onDismiss={formActions.clearErrors} />

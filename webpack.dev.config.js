@@ -38,6 +38,7 @@ module.exports = {
           path.join(__dirname, 'actions.js'),
           path.join(__dirname, 'client.js'),
           path.join(__dirname, 'options.js'),
+          path.join(__dirname, 'reactions.js'),
           path.join(__dirname, 'routes.js'),
           path.join(__dirname, 'state.js'),
           path.join(__dirname, 'stores.js'),
