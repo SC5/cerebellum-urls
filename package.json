@@ -60,7 +60,8 @@
     "./config/api.js": "./config/api-browser.js"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "4.x",
+    "npm": "2.14.x"
   },
   "repository": {
     "type": "git",
