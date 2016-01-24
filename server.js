@@ -12,14 +12,14 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
-import ConnectMongoStore from 'connect-mongostore';
+import ConnectMongo from 'connect-mongo';
 import options from './options';
 import UrlsAPI from './api';
 import AuthenticationFactory from './authentication';
 import request from 'request';
 
 // connect to our database
-const MongoStore = ConnectMongoStore(session);
+const MongoStore = ConnectMongo(session);
 const mongoAuth = process.env.MONGO_USER ? process.env.MONGO_USER+":"+process.env.MONGO_PASS+"@" : "";
 mongoose.connect("mongodb://"+mongoAuth+process.env.MONGO_HOST+":"+process.env.MONGO_PORT+"/"+process.env.MONGO_DBNAME);
 
@@ -31,11 +31,7 @@ options.middleware = [
   session({
     secret: process.env.COOKIE_SECRET,
     store: new MongoStore({
-      db: process.env.MONGO_DBNAME,
-      host: process.env.MONGO_HOST,
-      port: process.env.MONGO_PORT,
-      username: process.env.MONGO_USER,
-      password: process.env.MONGO_PASS,
+      mongooseConnection: mongoose.connection,
       collection: "sessions"
     }),
     saveUninitialized: true,
