@@ -44,7 +44,7 @@ class LinkForm extends React.Component {
         id: link.get("_id"),
         title: link.get("title"),
         url: link.get("url"),
-        tags: link.get("tags").join(",")
+        tags: link.get("tags")
       });
     } else {
       this.clear();

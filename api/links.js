@@ -9,7 +9,11 @@ module.exports = function(ensureAuthenticated) {
       if (err) {
         return res.send(err);
       }
-      return res.json(links);
+      return res.json(
+        links.map(link => {
+          return {...link.toJSON(), tags: link.tags.join(",")};
+        })
+      );
     });
   });
 

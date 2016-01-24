@@ -1,7 +1,8 @@
 import React from 'react';
+import PureComponent from 'react-pure-render/component';
 import Tag from './tag.jsx';
 
-class TagsList extends React.Component {
+class TagsList extends PureComponent {
 
   static title = "your tags"
 
@@ -12,7 +13,7 @@ class TagsList extends React.Component {
   }
 
   render() {
-    const tags = this.props.tags.toArray().map(tag => <Tag tag={tag} />);
+    const tags = this.props.tags.map(tag => <Tag key={tag} tag={tag} />);
     return (
       <div className="Tags-list">
         <h3>All tags</h3>

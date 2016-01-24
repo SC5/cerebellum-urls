@@ -1,11 +1,12 @@
 import React from 'react';
+import PureComponent from 'react-pure-render/component';
 import {Jumbotron} from 'react-bootstrap';
 
 import Navigation from './navigation.jsx';
 import Links from './links.jsx';
 import LinkForm from './link-form.jsx';
 
-class Index extends React.Component {
+class Index extends PureComponent {
 
   static title = "save and tag your urls"
 

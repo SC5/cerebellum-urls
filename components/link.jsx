@@ -1,15 +1,16 @@
 import React from 'react';
+import PureComponent from 'react-pure-render/component';
 import {Col, Label, ButtonGroup, Button} from 'react-bootstrap';
 import '../assets/styles/link.css';
 
-class Link extends React.Component {
+class Link extends PureComponent {
 
   static contextTypes = {
     store: React.PropTypes.object
   }
 
   constructor(props, context) {
-    super(props);
+    super(props, context);
     this.context = context;
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
@@ -28,7 +29,7 @@ class Link extends React.Component {
     let tags = null;
 
     if (link.get("tags")) {
-      tags = link.get("tags").toArray().map((tag, i) => {
+      tags = link.get("tags").split(",").map((tag, i) => {
         return <a key={`${tag}_${i}`} href={`/tags/${tag}`}><Label>{tag}</Label></a>;
       });
     }

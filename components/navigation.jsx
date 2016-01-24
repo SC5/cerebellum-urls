@@ -5,7 +5,6 @@ import '../assets/styles/navigation.css';
 class Navigation extends React.Component {
 
   render() {
-    const brand = <a href="/" className="navbar-brand">urls</a>;
     let navigation = null;
 
     if (this.props.user.get("_id")) {
@@ -25,8 +24,16 @@ class Navigation extends React.Component {
     }
 
     return (
-      <Navbar className="Navigation" brand={brand} fixedTop toggleNavKey={0}>
-        {navigation}
+      <Navbar className="Navigation" fixedTop>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/" className="navbar-brand">urls</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          {navigation}
+        </Navbar.Collapse>
       </Navbar>
     );
   }

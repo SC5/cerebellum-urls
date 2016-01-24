@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.load();
 
 import React from 'react';
+import ReactDOM from 'react-dom/server';
 import mongoose from 'mongoose';
 import {server as Cerebellum} from 'cerebellum';
 import CerebellumReact from 'cerebellum-react'
@@ -47,14 +48,11 @@ options.middleware = [
 // cerebellum-react specific options
 const Layout = React.createFactory(require('./components/layout.jsx'));
 options.prependTitle = "urls - ";
-options.containerComponent = (store, component, props) => {
-  return Layout({
-    createComponent: () => { return component() },
-    store: store
-  });
+options.containerComponent = (store, children, props) => {
+  return Layout({ store, children });
 };
 
-const app = CerebellumReact(Cerebellum, React, options);
+const app = CerebellumReact(Cerebellum, React, ReactDOM, options);
 
 // load API routes
 app.use( "/api", UrlsAPI );
